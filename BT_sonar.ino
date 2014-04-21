@@ -8,6 +8,8 @@ int leftVibe = 6;
 //right vibe
 int rightVibe = 16;
 
+int writeVal = 0;
+
 void setup()  { 
   // for debugging
   Serial.begin(9600);
@@ -23,42 +25,32 @@ void loop()  {
   // get distance
   float readingCm = rangeSensorPW.getRange();
   
-  write_it(readingCm);
+  writeVal = get_write_val(readingCm);
+  analogWrite(leftVibe, writeVal);
+  analogWrite(rightVibe, writeVal);
+  
   Serial.print(readingCm);
   Serial.print("cm\n");  
   
   delay(50);                            
 }
 
-void write_it(float range)
-{
-  if ((int)range < 25)
-  {
-    digitalWrite(leftVibe, HIGH); 
-    digitalWrite(rightVibe, HIGH);
-  }
-  else
-  {
-    digitalWrite(leftVibe, LOW); 
-    digitalWrite(rightVibe, LOW);
-    Serial.print("here\n");
-  }
-
-//  if (range > 60)
-//    return 0;
-//  if (range > 50)
-//    return 100;
-//  if (range > 40)
-//    return 110;
-//  if (range > 30)
-//    return 130;
-//  if (range > 20)
-//    return 150;
-//  if (range > 18)
-//    return 200;
-//  return 255;
-
+int get_write_val(float range) {
+  if (range > 60) 
+    return 0;
+  if (range > 50)
+    return 100;
+  if (range > 45)
+    return 110;
+  if (range > 40)
+    return 130;
+  if (range > 35)
+    return 150;
+  if (range > 30)
+    return 200;
+  return 255;
 }
+
 
 
 
